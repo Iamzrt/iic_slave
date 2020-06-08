@@ -1,0 +1,38 @@
+
+#define POLYNOME 0x07  // Polynome for CRC generation
+
+unsigned char GetCrc8(unsigned char chkSum, unsigned char crcData)
+{
+   unsigned char j = 8; // Counter for 8 shifts
+   chkSum ^= crcData; // Initial XOR
+   do
+   {
+      if (!(chkSum & 0x80)) // Check MSB
+      {
+         chkSum = chkSum << 1; // If MSB = 0, shift left
+      }
+      else
+      {
+         chkSum = (chkSum << 1) ^ POLYNOME; // If MSB = 1, shift and XOR
+      }
+  } while (--j); // Continue for 8 bits
+  return chkSum; // Return final value
+}
+
+
+#if 0
+	u8_t data[] = {0x16, 0xEE, 0x5A, 0x1E};
+	u8_t size = 0;
+	u8_t result = 0;
+	u8_t i = 0;
+	
+	while(1)
+	{	
+		size = sizeof(data)/sizeof(u8_t);
+		result = 0;
+		
+		for(i=0; i<size; i++)
+			result = GetCrc8(result, data[i]);
+	}
+	
+#endif
